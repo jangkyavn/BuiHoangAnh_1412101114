@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import com.it.anhbh.buihoanganh_1412101114.R;
 import com.it.anhbh.buihoanganh_1412101114.models.News;
+import com.it.anhbh.buihoanganh_1412101114.utilities.Utility;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -53,7 +55,7 @@ public class CustomArrayAdapter extends ArrayAdapter<News> {
         News news = this.objects.get(position);
 
         holder.tvTitle.setText(Html.fromHtml(news.getTitle()));
-        holder.tvPubDate.setText(news.getPubDate());
+        holder.tvPubDate.setText(Utility.getPeriod(news.getPubDate()));
         Picasso.get().load(news.getImage()).into(holder.ivImage);
 
         return view;

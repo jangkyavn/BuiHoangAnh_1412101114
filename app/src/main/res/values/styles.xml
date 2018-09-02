@@ -8,8 +8,12 @@
         <item name="colorAccent">@color/colorWhite</item>
     </style>
 
-    <style name="customTabTextAppearance" parent="TextAppearance.Design.Tab">
+    <style name="CustomTabTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="textAllCaps">false</item>
+    </style>
+
+    <style name="ProgressBarColor" parent="Widget.AppCompat.ProgressBar">
+        <item name="colorAccent">@color/colorPrimary</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

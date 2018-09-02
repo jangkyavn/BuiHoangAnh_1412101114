@@ -2,4 +2,5 @@
 <resources>
     <string name="app_name">BuiHoangAnh_1412101114</string>
     <string name="btn_close">Đóng</string>
+    <string name="action_renew">Làm mới</string>
 </resources>
