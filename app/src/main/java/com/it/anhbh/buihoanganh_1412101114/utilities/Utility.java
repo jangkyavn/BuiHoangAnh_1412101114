@@ -1,5 +1,9 @@
 package com.it.anhbh.buihoanganh_1412101114.utilities;
 
+import android.app.Activity;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -26,27 +30,27 @@ public class Utility {
             e.printStackTrace();
         }
 
-        String result = "";
-
         //in milliseconds
         long diff = now.getTime() - pubDate.getTime();
 
-        long diffSeconds = diff / 1000 % 60;
+        //long diffSeconds = diff / 1000 % 60;
         long diffMinutes = diff / (60 * 1000) % 60;
         long diffHours = diff / (60 * 60 * 1000) % 24;
         long diffDays = diff / (24 * 60 * 60 * 1000);
 
         if (diffDays > 0) {
-            result = diffDays + " ngày trước";
-        } else if (diffDays == 0 && diffHours > 0 && diffHours < 24) {
-            result = diffHours + " giờ trước";
-        } else if (diffDays == 0 && diffHours == 0 && diffMinutes > 0 && diffMinutes < 60) {
-            result = diffMinutes + " phút trước";
-        } else if (diffDays == 0 && diffHours == 0 && diffMinutes == 0 && diffSeconds > 0 && diffSeconds < 60) {
-            result = "Vài giây trước";
+            return diffDays + " ngày trước";
         }
 
-        return result;
+        if (diffHours > 0 && diffHours < 24) {
+            return diffHours + " giờ trước";
+        }
+
+        if (diffMinutes > 0 && diffMinutes < 60) {
+            return diffMinutes + " phút trước";
+        }
+
+        return "Vài giây trước";
     }
 
     public static String getContentFromUrl(String theUrl) {
@@ -73,5 +77,12 @@ public class Utility {
         }
 
         return content.toString();
+    }
+
+    public static boolean isConnected(Activity activity) {
+        ConnectivityManager cm = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 }

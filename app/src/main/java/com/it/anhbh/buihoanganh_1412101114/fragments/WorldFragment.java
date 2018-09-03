@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,6 +33,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class WorldFragment extends Fragment {
+    SwipeRefreshLayout refreshLayout;
     ListView lvWorld;
     CustomArrayAdapter adapter;
     ArrayList<News> arrWorld;
@@ -42,8 +44,8 @@ public class WorldFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_world, container, false);
-        setHasOptionsMenu(true);
 
+        refreshLayout = view.findViewById(R.id.refresh_layout);
         lvWorld = view.findViewById(R.id.lv_world);
         progressBar = view.findViewById(R.id.progress_bar);
 
@@ -53,29 +55,26 @@ public class WorldFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_main, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_renew) {
-            loadData();
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     private void loadData() {
         WorldTask task = new WorldTask();
         task.execute("https://www.24h.com.vn/upload/rss/tintucquocte.rss");
     }
 
     private void registerEvents() {
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshLayout.setColorSchemeColors(getActivity().getResources().getColor(R.color.colorPrimary));
+                refreshLayout.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        loadData();
+                        refreshLayout.setRefreshing(false);
+                    }
+                }, 2000);
+            }
+        });
+
         lvWorld.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

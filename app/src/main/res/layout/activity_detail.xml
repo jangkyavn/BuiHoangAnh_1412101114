@@ -12,6 +12,7 @@
 
     <Button
         android:id="@+id/btn_close"
+        style="?android:attr/borderlessButtonStyle"
         android:layout_width="@dimen/btn_close_witdth"
         android:layout_height="@dimen/btn_close_height"
         android:layout_alignParentBottom="true"

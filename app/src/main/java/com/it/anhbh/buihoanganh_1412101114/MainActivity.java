@@ -10,8 +10,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import com.it.anhbh.buihoanganh_1412101114.adapters.ViewPagerAdapter;
+import com.it.anhbh.buihoanganh_1412101114.utilities.Utility;
 
 public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;

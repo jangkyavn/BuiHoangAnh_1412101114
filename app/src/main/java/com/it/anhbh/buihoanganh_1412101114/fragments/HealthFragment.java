@@ -8,6 +8,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -29,23 +32,21 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.it.anhbh.buihoanganh_1412101114.R.color.colorPrimary;
-
-public class NewsDayFragment extends Fragment {
+public class HealthFragment extends Fragment {
     SwipeRefreshLayout refreshLayout;
-    ListView lvNewsDay;
+    ListView lvHealth;
     CustomArrayAdapter adapter;
-    ArrayList<News> arrNewsDay;
+    ArrayList<News> arrHealth;
 
     ProgressBar progressBar;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_news_day, container, false);
+        View view = inflater.inflate(R.layout.fragment_health, container, false);
 
         refreshLayout = view.findViewById(R.id.refresh_layout);
-        lvNewsDay = view.findViewById(R.id.lv_news_day);
+        lvHealth = view.findViewById(R.id.lv_health);
         progressBar = view.findViewById(R.id.progress_bar);
 
         loadData();
@@ -55,8 +56,8 @@ public class NewsDayFragment extends Fragment {
     }
 
     private void loadData() {
-        NewsDayTask task = new NewsDayTask();
-        task.execute("https://www.24h.com.vn/upload/rss/tintuctrongngay.rss");
+        HealthTask task = new HealthTask();
+        task.execute("https://www.24h.com.vn/upload/rss/suckhoedoisong.rss");
     }
 
     private void registerEvents() {
@@ -74,23 +75,23 @@ public class NewsDayFragment extends Fragment {
             }
         });
 
-        lvNewsDay.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        lvHealth.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), DetailActivity.class);
-                intent.putExtra("link", arrNewsDay.get(position).getLink());
+                intent.putExtra("link", arrHealth.get(position).getLink());
                 startActivity(intent);
             }
         });
     }
 
-    class NewsDayTask extends AsyncTask<String, Void, String> {
+    class HealthTask extends AsyncTask<String, Void, String> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
 
             progressBar.setVisibility(View.VISIBLE);
-            lvNewsDay.setVisibility(View.GONE);
+            lvHealth.setVisibility(View.GONE);
         }
 
         @Override
@@ -110,7 +111,7 @@ public class NewsDayFragment extends Fragment {
 
             News news = null;
             String image = "";
-            arrNewsDay = new ArrayList<>();
+            arrHealth = new ArrayList<>();
 
             int nodeLength = nodeItems.getLength();
             for (int i = 0; i < nodeLength; i++) {
@@ -130,14 +131,14 @@ public class NewsDayFragment extends Fragment {
                 news.setLink(parser.getValue(element, "link"));
                 news.setPubDate(parser.getValue(element, "pubDate"));
 
-                arrNewsDay.add(news);
+                arrHealth.add(news);
             }
 
-            adapter = new CustomArrayAdapter(getActivity(), R.layout.custom_list_item, arrNewsDay);
-            lvNewsDay.setAdapter(adapter);
+            adapter = new CustomArrayAdapter(getActivity(), R.layout.custom_list_item, arrHealth);
+            lvHealth.setAdapter(adapter);
 
             progressBar.setVisibility(View.GONE);
-            lvNewsDay.setVisibility(View.VISIBLE);
+            lvHealth.setVisibility(View.VISIBLE);
         }
     }
 }
