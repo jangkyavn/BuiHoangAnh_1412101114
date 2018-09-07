@@ -18,16 +18,15 @@ import com.it.anhbh.buihoanganh_1412101114.DetailActivity;
 import com.it.anhbh.buihoanganh_1412101114.R;
 import com.it.anhbh.buihoanganh_1412101114.adapters.CustomArrayAdapter;
 import com.it.anhbh.buihoanganh_1412101114.models.News;
-import com.it.anhbh.buihoanganh_1412101114.utilities.Utility;
-import com.it.anhbh.buihoanganh_1412101114.utilities.XMLDOMParser;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.parser.Parser;
+import org.jsoup.select.Elements;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class TravelFragment extends Fragment {
     SwipeRefreshLayout refreshLayout;
@@ -82,7 +81,7 @@ public class TravelFragment extends Fragment {
         });
     }
 
-    class TravelTask extends AsyncTask<String, Void, String> {
+    class TravelTask extends AsyncTask<String, Void, Document> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -92,41 +91,33 @@ public class TravelFragment extends Fragment {
         }
 
         @Override
-        protected String doInBackground(String... strings) {
-            return Utility.getContentFromUrl(strings[0]);
+        protected Document doInBackground(String... strings) {
+            Document document = null;
+
+            try {
+                document = Jsoup.connect(strings[0]).get();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return document;
         }
 
         @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
+        protected void onPostExecute(Document document) {
+            super.onPostExecute(document);
 
-            XMLDOMParser parser = new XMLDOMParser();
-            Document document = parser.getDocument(s);
-
-            NodeList nodeItems = document.getElementsByTagName("item");
-            NodeList nodeDescriptions = document.getElementsByTagName("description");
+            Elements elements = document.select("item");
 
             News news = null;
-            String image = "";
             arrTravel = new ArrayList<>();
 
-            int nodeLength = nodeItems.getLength();
-            for (int i = 0; i < nodeLength; i++) {
-                String cData = nodeDescriptions.item(i + 1).getTextContent();
-                Pattern pattern = Pattern.compile("<img[^>]+src\\s*=\\s*['\"]([^'\"]+)['\"][^>]*>");
-                Matcher matcher = pattern.matcher(cData);
-                if (matcher.find()) {
-                    image = matcher.group(1);
-                }
-
+            for (Element element: elements) {
                 news = new News();
-
-                Element element = (Element) nodeItems.item(i);
-
-                news.setTitle(parser.getValue(element, "title"));
-                news.setImage(image);
-                news.setLink(parser.getValue(element, "link"));
-                news.setPubDate(parser.getValue(element, "pubDate"));
+                news.setTitle(element.select("title").text());
+                news.setImage(Jsoup.parse(element.select("description").text()).select("img").attr("src"));
+                news.setLink(element.select("link").text());
+                news.setPubDate(element.select("pubDate").text());
 
                 arrTravel.add(news);
             }

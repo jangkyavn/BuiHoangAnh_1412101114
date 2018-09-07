@@ -38,7 +38,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         fragmentTitleList.add("Thời trang");
         fragmentTitleList.add("Giáo dục");
         fragmentTitleList.add("Giải trí");
-        fragmentTitleList.add("Sức khởe");
+        fragmentTitleList.add("Sức khỏe");
         fragmentTitleList.add("Du lịch");
     }
 

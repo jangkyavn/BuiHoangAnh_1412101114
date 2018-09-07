@@ -10,7 +10,7 @@
     <dimen name="tv_pubdate_size">8sp</dimen>
 
     <dimen name="btn_close_radius">30dp</dimen>
-    <dimen name="btn_close_witdth">150dp</dimen>
-    <dimen name="btn_close_height">40dp</dimen>
-    <dimen name="btn_close_margin_bottom">25dp</dimen>
+    <dimen name="btn_close_witdth">160dp</dimen>
+    <dimen name="btn_close_height">45dp</dimen>
+    <dimen name="btn_close_margin_bottom">10dp</dimen>
 </resources>
