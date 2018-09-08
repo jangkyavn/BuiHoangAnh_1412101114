@@ -17,7 +17,9 @@ import android.widget.ProgressBar;
 import com.it.anhbh.buihoanganh_1412101114.DetailActivity;
 import com.it.anhbh.buihoanganh_1412101114.R;
 import com.it.anhbh.buihoanganh_1412101114.adapters.CustomArrayAdapter;
+import com.it.anhbh.buihoanganh_1412101114.constants.Constants;
 import com.it.anhbh.buihoanganh_1412101114.models.News;
+import com.it.anhbh.buihoanganh_1412101114.storages.InternalStorage;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -36,6 +38,8 @@ public class EducationFragment extends Fragment {
 
     ProgressBar progressBar;
 
+    InternalStorage internalStorage;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -44,6 +48,8 @@ public class EducationFragment extends Fragment {
         refreshLayout = view.findViewById(R.id.refresh_layout);
         lvEducation = view.findViewById(R.id.lv_education);
         progressBar = view.findViewById(R.id.progress_bar);
+
+        internalStorage = new InternalStorage(getActivity());
 
         loadData();
         registerEvents();
@@ -67,15 +73,19 @@ public class EducationFragment extends Fragment {
                         loadData();
                         refreshLayout.setRefreshing(false);
                     }
-                }, 2000);
+                }, 1000);
             }
         });
 
         lvEducation.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                News news = arrEducation.get(position);
+
+                internalStorage.addObject(news, Constants.FILE_READ_RECENTLY);
+
                 Intent intent = new Intent(getActivity(), DetailActivity.class);
-                intent.putExtra("link", arrEducation.get(position).getLink());
+                intent.putExtra("news", news);
                 startActivity(intent);
             }
         });

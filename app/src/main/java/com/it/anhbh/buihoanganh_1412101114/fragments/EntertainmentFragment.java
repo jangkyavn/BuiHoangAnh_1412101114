@@ -17,12 +17,13 @@ import android.widget.ProgressBar;
 import com.it.anhbh.buihoanganh_1412101114.DetailActivity;
 import com.it.anhbh.buihoanganh_1412101114.R;
 import com.it.anhbh.buihoanganh_1412101114.adapters.CustomArrayAdapter;
+import com.it.anhbh.buihoanganh_1412101114.constants.Constants;
 import com.it.anhbh.buihoanganh_1412101114.models.News;
+import com.it.anhbh.buihoanganh_1412101114.storages.InternalStorage;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
@@ -36,6 +37,8 @@ public class EntertainmentFragment extends Fragment {
 
     ProgressBar progressBar;
 
+    InternalStorage internalStorage;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -44,6 +47,8 @@ public class EntertainmentFragment extends Fragment {
         refreshLayout = view.findViewById(R.id.refresh_layout);
         lvEntertainment = view.findViewById(R.id.lv_entertainment);
         progressBar = view.findViewById(R.id.progress_bar);
+
+        internalStorage = new InternalStorage(getActivity());
 
         loadData();
         registerEvents();
@@ -67,15 +72,19 @@ public class EntertainmentFragment extends Fragment {
                         loadData();
                         refreshLayout.setRefreshing(false);
                     }
-                }, 2000);
+                }, 1000);
             }
         });
 
         lvEntertainment.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                News news = arrEntertainment.get(position);
+
+                internalStorage.addObject(news, Constants.FILE_READ_RECENTLY);
+
                 Intent intent = new Intent(getActivity(), DetailActivity.class);
-                intent.putExtra("link", arrEntertainment.get(position).getLink());
+                intent.putExtra("news", news);
                 startActivity(intent);
             }
         });
