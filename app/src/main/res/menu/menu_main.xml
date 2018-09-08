@@ -3,9 +3,5 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.it.anhbh.buihoanganh_1412101114.MainActivity">
 
-    <item
-        android:id="@+id/action_renew"
-        android:icon="@drawable/ic_menu_renew"
-        android:title="@string/action_renew"
-        app:showAsAction="always" />
+
 </menu>

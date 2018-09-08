@@ -5,6 +5,6 @@
     <solid android:color="@color/colorTransparencyPrimary" />
 
     <corners
-        android:topLeftRadius="@dimen/btn_radius"
-        android:bottomLeftRadius="@dimen/btn_radius" />
+        android:bottomRightRadius="@dimen/btn_radius"
+        android:topRightRadius="@dimen/btn_radius" />
 </shape>

@@ -1,7 +1,15 @@
 <resources>
     <string name="app_name">BuiHoangAnh_1412101114</string>
-    <string name="action_settings">Settings</string>
-    <string name="action_renew">Renew</string>
-    
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
     <string name="btn_close">Close</string>
+
+    <string name="nav_saved_news_title">Saved news</string>
+    <string name="nav_read_recently_title">Read recently</string>
+
+    <string name="toobar_saved_news_title">Saved news</string>
+    <string name="toobar_read_recently_title">Read news history</string>
+
+    <string name="menu_delete_all">Delete all</string>
 </resources>

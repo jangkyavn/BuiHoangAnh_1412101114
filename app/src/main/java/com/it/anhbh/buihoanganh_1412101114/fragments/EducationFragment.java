@@ -8,9 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -20,17 +17,18 @@ import android.widget.ProgressBar;
 import com.it.anhbh.buihoanganh_1412101114.DetailActivity;
 import com.it.anhbh.buihoanganh_1412101114.R;
 import com.it.anhbh.buihoanganh_1412101114.adapters.CustomArrayAdapter;
+import com.it.anhbh.buihoanganh_1412101114.constants.Constants;
 import com.it.anhbh.buihoanganh_1412101114.models.News;
-import com.it.anhbh.buihoanganh_1412101114.utilities.Utility;
-import com.it.anhbh.buihoanganh_1412101114.utilities.XMLDOMParser;
+import com.it.anhbh.buihoanganh_1412101114.storages.InternalStorage;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.parser.Parser;
+import org.jsoup.select.Elements;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class EducationFragment extends Fragment {
     SwipeRefreshLayout refreshLayout;
@@ -40,6 +38,8 @@ public class EducationFragment extends Fragment {
 
     ProgressBar progressBar;
 
+    InternalStorage internalStorage;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -48,6 +48,8 @@ public class EducationFragment extends Fragment {
         refreshLayout = view.findViewById(R.id.refresh_layout);
         lvEducation = view.findViewById(R.id.lv_education);
         progressBar = view.findViewById(R.id.progress_bar);
+
+        internalStorage = new InternalStorage(getActivity());
 
         loadData();
         registerEvents();
@@ -71,21 +73,25 @@ public class EducationFragment extends Fragment {
                         loadData();
                         refreshLayout.setRefreshing(false);
                     }
-                }, 2000);
+                }, 1000);
             }
         });
 
         lvEducation.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                News news = arrEducation.get(position);
+
+                internalStorage.addObject(news, Constants.FILE_READ_RECENTLY);
+
                 Intent intent = new Intent(getActivity(), DetailActivity.class);
-                intent.putExtra("link", arrEducation.get(position).getLink());
+                intent.putExtra("news", news);
                 startActivity(intent);
             }
         });
     }
 
-    class EducationTask extends AsyncTask<String, Void, String> {
+    class EducationTask extends AsyncTask<String, Void, Document> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -95,41 +101,33 @@ public class EducationFragment extends Fragment {
         }
 
         @Override
-        protected String doInBackground(String... strings) {
-            return Utility.getContentFromUrl(strings[0]);
+        protected Document doInBackground(String... strings) {
+            Document document = null;
+
+            try {
+                document = Jsoup.connect(strings[0]).get();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return document;
         }
 
         @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
+        protected void onPostExecute(Document document) {
+            super.onPostExecute(document);
 
-            XMLDOMParser parser = new XMLDOMParser();
-            Document document = parser.getDocument(s);
-
-            NodeList nodeItems = document.getElementsByTagName("item");
-            NodeList nodeDescriptions = document.getElementsByTagName("description");
+            Elements elements = document.select("item");
 
             News news = null;
-            String image = "";
             arrEducation = new ArrayList<>();
 
-            int nodeLength = nodeItems.getLength();
-            for (int i = 0; i < nodeLength; i++) {
-                String cData = nodeDescriptions.item(i + 1).getTextContent();
-                Pattern pattern = Pattern.compile("<img[^>]+src\\s*=\\s*['\"]([^'\"]+)['\"][^>]*>");
-                Matcher matcher = pattern.matcher(cData);
-                if (matcher.find()) {
-                    image = matcher.group(1);
-                }
-
+            for (Element element: elements) {
                 news = new News();
-
-                Element element = (Element) nodeItems.item(i);
-
-                news.setTitle(parser.getValue(element, "title"));
-                news.setImage(image);
-                news.setLink(parser.getValue(element, "link"));
-                news.setPubDate(parser.getValue(element, "pubDate"));
+                news.setTitle(element.select("title").text());
+                news.setImage(Jsoup.parse(element.select("description").text()).select("img").attr("src"));
+                news.setLink(element.select("link").text());
+                news.setPubDate(element.select("pubDate").text());
 
                 arrEducation.add(news);
             }
