@@ -21,7 +21,7 @@ public class Utility {
     public static String getPeriod(String strPubDate) {
         Date now = new Date();
 
-        DateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.ENGLISH);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.ENGLISH);
 
         Date pubDate = null;
         try {

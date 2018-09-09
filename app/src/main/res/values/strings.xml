@@ -8,8 +8,8 @@
     <string name="nav_saved_news_title">Saved news</string>
     <string name="nav_read_recently_title">Read recently</string>
 
-    <string name="toobar_saved_news_title">Saved news</string>
-    <string name="toobar_read_recently_title">Read news history</string>
+    <string name="toolbar_saved_news_title">Saved news</string>
+    <string name="toolbar_read_recently_title">Read news history</string>
 
-    <string name="menu_delete_all">Delete all</string>
+    <string name="btn_delete_all">Delete all</string>
 </resources>

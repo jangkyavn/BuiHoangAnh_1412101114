@@ -35,7 +35,7 @@ public class SavedNewsActivity extends AppCompatActivity {
 
         internalStorage = new InternalStorage(this);
 
-        toolbar.setTitle(R.string.toobar_saved_news_title);
+        toolbar.setTitle(R.string.toolbar_saved_news_title);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);

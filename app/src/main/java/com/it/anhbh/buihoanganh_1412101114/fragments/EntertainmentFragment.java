@@ -3,6 +3,7 @@ package com.it.anhbh.buihoanganh_1412101114.fragments;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
@@ -32,11 +35,10 @@ import java.util.ArrayList;
 public class EntertainmentFragment extends Fragment {
     SwipeRefreshLayout refreshLayout;
     ListView lvEntertainment;
-    CustomArrayAdapter adapter;
-    ArrayList<News> arrEntertainment;
-
     ProgressBar progressBar;
 
+    CustomArrayAdapter adapter;
+    ArrayList<News> arrEntertainment;
     InternalStorage internalStorage;
 
     @Nullable
@@ -121,7 +123,7 @@ public class EntertainmentFragment extends Fragment {
             News news = null;
             arrEntertainment = new ArrayList<>();
 
-            for (Element element: elements) {
+            for (Element element : elements) {
                 news = new News();
                 news.setTitle(element.select("title").text());
                 news.setImage(Jsoup.parse(element.select("description").text()).select("img").attr("src"));

@@ -4,7 +4,7 @@
     <string name="btn_close">Đóng</string>
     <string name="nav_saved_news_title">Các tin đã lưu</string>
     <string name="nav_read_recently_title">Đọc gần đây</string>
-    <string name="toobar_saved_news_title">Tin đã lưu</string>
-    <string name="toobar_read_recently_title">Lịch sử đọc tin</string>
-    <string name="menu_delete_all">Xóa tất cả</string>
+    <string name="toolbar_saved_news_title">Tin đã lưu</string>
+    <string name="toolbar_read_recently_title">Lịch sử đọc tin</string>
+    <string name="btn_delete_all">Xóa tất cả</string>
 </resources>
