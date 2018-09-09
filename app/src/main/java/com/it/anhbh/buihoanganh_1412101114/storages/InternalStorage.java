@@ -24,7 +24,7 @@ public class InternalStorage {
         this.activity = activity;
     }
 
-    public boolean addObject(News news, String fileName) {
+    public void addObject(News news, String fileName) {
         ArrayList<News> arrNews = readFile(fileName);
 
         if (arrNews != null) {
@@ -42,18 +42,14 @@ public class InternalStorage {
             FileOutputStream outputStream = activity.openFileOutput(fileName, Context.MODE_PRIVATE);
             outputStream.write(jsonArray.getBytes());
             outputStream.close();
-
-            return true;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        return false;
     }
 
-    public boolean removeObject(News news, String fileName) {
+    public void removeObject(News news, String fileName) {
         ArrayList<News> arrNews = readFile(fileName);
 
         int length = arrNews.size();
@@ -70,15 +66,11 @@ public class InternalStorage {
             FileOutputStream outputStream = activity.openFileOutput(fileName, Context.MODE_PRIVATE);
             outputStream.write(jsonList.getBytes());
             outputStream.close();
-
-            return true;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        return false;
     }
 
     // Read data from file

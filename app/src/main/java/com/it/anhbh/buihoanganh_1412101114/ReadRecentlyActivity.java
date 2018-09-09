@@ -40,7 +40,7 @@ public class ReadRecentlyActivity extends AppCompatActivity {
 
         internalStorage = new InternalStorage(this);
 
-        toolbar.setTitle(R.string.toobar_read_recently_title);
+        toolbar.setTitle(R.string.toolbar_read_recently_title);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
