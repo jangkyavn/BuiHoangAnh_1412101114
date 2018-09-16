@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +45,7 @@ public class CustomArrayAdapter extends ArrayAdapter<News> {
             holder = new ViewHolder();
             holder.tvTitle = view.findViewById(R.id.tv_title);
             holder.tvPubDate = view.findViewById(R.id.tv_pubdate);
-            holder.ivImage = view.findViewById(R.id.iv_image);
+            holder.ivThumbnail = view.findViewById(R.id.iv_thumbnail);
 
             view.setTag(holder);
         } else {
@@ -55,13 +56,13 @@ public class CustomArrayAdapter extends ArrayAdapter<News> {
 
         holder.tvTitle.setText(Html.fromHtml(news.getTitle()));
         holder.tvPubDate.setText(Utility.getPeriod(news.getPubDate()));
-        Picasso.get().load(news.getImage()).into(holder.ivImage);
+        Picasso.get().load(news.getThumbnail()).into(holder.ivThumbnail);
 
         return view;
     }
 
     class ViewHolder {
         TextView tvTitle, tvPubDate;
-        ImageView ivImage;
+        ImageView ivThumbnail;
     }
 }

@@ -1,6 +1,10 @@
 package com.it.anhbh.buihoanganh_1412101114;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -19,8 +23,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.it.anhbh.buihoanganh_1412101114.adapters.ViewPagerAdapter;
+import com.it.anhbh.buihoanganh_1412101114.constants.Constants;
 import com.it.anhbh.buihoanganh_1412101114.utilities.Utility;
 
 import java.text.SimpleDateFormat;
@@ -71,8 +77,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 intent = new Intent(MainActivity.this, SavedNewsActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.nav_read_recently:
+            case R.id.nav_history:
                 intent = new Intent(MainActivity.this, ReadRecentlyActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.nav_review:
+                break;
+            case R.id.nav_send_email:
+                intent = new Intent (Intent.ACTION_VIEW , Uri.parse("mailto:" + "anhbh995@gmail.com"));
+                intent.putExtra(Intent.EXTRA_SUBJECT, "[" + getResources().getString(R.string.app_name) + "] Góp ý cho phiên bản " + BuildConfig.VERSION_NAME + " (trên " + Utility.getDeviceInformation() + ")");
+                intent.putExtra(Intent.EXTRA_TEXT, "");
                 startActivity(intent);
                 break;
         }

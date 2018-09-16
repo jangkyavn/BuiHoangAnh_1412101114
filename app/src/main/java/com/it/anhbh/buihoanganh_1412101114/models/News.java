@@ -4,16 +4,16 @@ import java.io.Serializable;
 
 public class News implements Serializable {
     private String title;
-    private String image;
+    private String thumbnail;
     private String link;
     private String pubDate;
 
     public News() {
     }
 
-    public News(String title, String image, String link, String pubDate) {
+    public News(String title, String thumbnail, String link, String pubDate) {
         this.title = title;
-        this.image = image;
+        this.thumbnail = thumbnail;
         this.link = link;
         this.pubDate = pubDate;
     }
@@ -26,12 +26,12 @@ public class News implements Serializable {
         this.title = title;
     }
 
-    public String getImage() {
-        return image;
+    public String getThumbnail() {
+        return thumbnail;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
     }
 
     public String getLink() {

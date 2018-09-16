@@ -1,48 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".DetailActivity">
 
     <WebView
         android:id="@+id/web_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
 
     <LinearLayout
-        android:layout_width="@dimen/btn_clode_width"
-        android:layout_height="@dimen/btn_close_height"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/btn_close_margin_bottom"
-        android:orientation="horizontal"
-        android:weightSum="5">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:background="@drawable/bottom_layout_detail"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@null"
+            android:drawableLeft="@drawable/ic_share_black"
+            android:paddingLeft="@dimen/btn_bottom_layout_padding_left"
+            android:text="@string/btn_share"
+            android:textAllCaps="false" />
+
+        <View
+            android:layout_width="@dimen/divider_bottom_layout_width"
+            android:layout_height="match_parent"
+            android:background="@color/colorGray" />
+
+        <Button
+            android:id="@+id/btn_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@null"
+            android:drawableLeft="@drawable/ic_bookmark_border_black"
+            android:paddingLeft="@dimen/btn_bottom_layout_padding_left"
+            android:text="@string/btn_save"
+            android:textAllCaps="false" />
+
+        <View
+            android:layout_width="@dimen/divider_bottom_layout_width"
+            android:layout_height="match_parent"
+            android:background="@color/colorGray" />
 
         <Button
             android:id="@+id/btn_close"
-            style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:background="@drawable/custom_btn_close"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@null"
+            android:drawableLeft="@drawable/ic_close_black"
+            android:paddingLeft="@dimen/btn_bottom_layout_padding_left"
             android:text="@string/btn_close"
-            android:textAllCaps="false"
-            android:textColor="@color/colorWhite"
-            android:textSize="@dimen/btn_close_text_size" />
-
-        <TextView
-            android:layout_width="@dimen/divider_width"
-            android:layout_height="match_parent"
-            android:background="@color/colorWhite" />
-
-        <ImageButton
-            android:id="@+id/btn_save"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:background="@drawable/custom_btn_save"
-            android:src="@drawable/ic_menu_bookmark" />
+            android:textAllCaps="false" />
 
     </LinearLayout>
-</RelativeLayout>
+
+</LinearLayout>

@@ -6,14 +6,9 @@
     <dimen name="iv_image_width">110dp</dimen>
     <dimen name="iv_image_height">80dp</dimen>
 
-    <dimen name="tv_title_size">12sp</dimen>
+    <dimen name="tv_title_size">11sp</dimen>
     <dimen name="tv_pubdate_size">8sp</dimen>
 
-    <dimen name="btn_radius">20dp</dimen>
-    <dimen name="btn_clode_width">190dp</dimen>
-    <dimen name="btn_close_height">45dp</dimen>
-    <dimen name="btn_close_margin_bottom">10dp</dimen>
-    <dimen name="btn_close_text_size">14sp</dimen>
-
-    <dimen name="divider_width">3px</dimen>
+    <dimen name="btn_bottom_layout_padding_left">10dp</dimen>
+    <dimen name="divider_bottom_layout_width">1dp</dimen>
 </resources>
