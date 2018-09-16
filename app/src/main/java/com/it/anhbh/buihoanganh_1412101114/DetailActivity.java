@@ -21,8 +21,7 @@ import java.util.ArrayList;
 
 public class DetailActivity extends AppCompatActivity {
     WebView webView;
-    Button btnClose;
-    ImageButton btnSave;
+    Button btnClose, btnSave, btnShare;
 
     InternalStorage internalStorage;
     News news;
@@ -35,16 +34,16 @@ public class DetailActivity extends AppCompatActivity {
         webView = findViewById(R.id.web_view);
         btnClose = findViewById(R.id.btn_close);
         btnSave = findViewById(R.id.btn_save);
+        btnShare = findViewById(R.id.btn_share);
 
         internalStorage = new InternalStorage(this);
 
         Intent intent = getIntent();
         news = (News) intent.getSerializableExtra("news");
 
-        webView.loadUrl(news.getLink());
-        WebSettings webSettings = webView.getSettings();
-        webSettings.setJavaScriptEnabled(true);
+        webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient());
+        webView.loadUrl(news.getLink());
 
         registerEvents();
     }
@@ -67,6 +66,17 @@ public class DetailActivity extends AppCompatActivity {
                     internalStorage.addObject(news, Constants.FILE_SAVED_NEWS);
                     Toast.makeText(DetailActivity.this, "Lưu tin thành công", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        btnShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent share = new Intent(Intent.ACTION_SEND);
+                share.setType("text/plain");
+                share.putExtra(Intent.EXTRA_TEXT, news.getLink());
+
+                startActivity(Intent.createChooser(share, "Chia sẻ với"));
             }
         });
     }

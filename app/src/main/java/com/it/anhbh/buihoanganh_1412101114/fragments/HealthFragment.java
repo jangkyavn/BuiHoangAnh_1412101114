@@ -128,7 +128,7 @@ public class HealthFragment extends Fragment {
             for (Element element : elements) {
                 news = new News();
                 news.setTitle(element.select("title").text());
-                news.setImage(Jsoup.parse(element.select("description").text()).select("img").attr("src"));
+                news.setThumbnail(Jsoup.parse(element.select("description").text()).select("img").attr("src"));
                 news.setLink(element.select("link").text());
                 news.setPubDate(element.select("pubDate").text());
 

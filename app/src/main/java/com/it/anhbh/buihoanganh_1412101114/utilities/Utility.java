@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -37,6 +38,11 @@ public class Utility {
         long diffMinutes = diff / (60 * 1000) % 60;
         long diffHours = diff / (60 * 60 * 1000) % 24;
         long diffDays = diff / (24 * 60 * 60 * 1000);
+        long diffWeeks = diffDays / 7;
+
+        if (diffWeeks > 0) {
+            return diffWeeks + " tuần trước";
+        }
 
         if (diffDays > 0) {
             return diffDays + " ngày trước";
@@ -56,7 +62,15 @@ public class Utility {
     public static boolean isConnected(Activity activity) {
         ConnectivityManager cm = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        
+
         return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
+    public static String getDeviceInformation() {
+        String manufacturer = Build.MANUFACTURER;
+        String model = Build.MODEL;
+        String version = Build.VERSION.RELEASE;
+
+        return manufacturer.toUpperCase() + " " + model + ", Android: " + version;
     }
 }

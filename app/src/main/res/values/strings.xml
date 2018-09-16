@@ -1,15 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">BuiHoangAnh_1412101114</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="btn_close">Close</string>
+    <string name="btn_close">Đóng</string>
+    <string name="btn_save">Lưu tin</string>
+    <string name="btn_share">Chia sẻ</string>
 
-    <string name="nav_saved_news_title">Saved news</string>
-    <string name="nav_read_recently_title">Read recently</string>
+    <string name="nav_saved_news_title">Các tin đã lưu</string>
+    <string name="nav_read_recently_title">Đọc gần đây</string>
+    <string name="nav_read_review_app">Đánh giá ứng dụng</string>
+    <string name="nav_send_email">Gửi email góp ý</string>
 
-    <string name="toolbar_saved_news_title">Saved news</string>
-    <string name="toolbar_read_recently_title">Read news history</string>
+    <string name="toolbar_saved_news_title">Tin đã lưu</string>
+    <string name="toolbar_read_recently_title">Lịch sử đọc tin</string>
 
-    <string name="btn_delete_all">Delete all</string>
+    <string name="btn_delete_all">Xóa tất cả</string>
 </resources>
