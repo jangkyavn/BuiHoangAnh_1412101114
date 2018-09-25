@@ -3,7 +3,6 @@ package com.it.anhbh.buihoanganh_1412101114.fragments;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -24,12 +23,10 @@ import com.it.anhbh.buihoanganh_1412101114.adapters.CustomArrayAdapter;
 import com.it.anhbh.buihoanganh_1412101114.constants.Constants;
 import com.it.anhbh.buihoanganh_1412101114.models.News;
 import com.it.anhbh.buihoanganh_1412101114.storages.InternalStorage;
-import com.it.anhbh.buihoanganh_1412101114.utilities.Utility;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
@@ -39,6 +36,8 @@ public class SportFragment extends Fragment {
     SwipeRefreshLayout refreshLayout;
     ListView lvSport;
     ProgressBar progressBar;
+    LinearLayout noInternetLayout;
+    Button btnRetry;
 
     CustomArrayAdapter adapter;
     ArrayList<News> arrSport;
@@ -52,6 +51,8 @@ public class SportFragment extends Fragment {
         refreshLayout = view.findViewById(R.id.refresh_layout);
         lvSport = view.findViewById(R.id.lv_sport);
         progressBar = view.findViewById(R.id.progress_bar);
+        noInternetLayout = view.findViewById(R.id.no_internet_layout);
+        btnRetry = view.findViewById(R.id.btn_retry);
 
         internalStorage = new InternalStorage(getActivity());
 
@@ -89,16 +90,24 @@ public class SportFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 News news = arrSport.get(position);
 
-                internalStorage.addObject(news, Constants.FILE_READ_RECENTLY);
+                internalStorage.addObject(news, Constants.FILE_HISTORY);
 
                 Intent intent = new Intent(getActivity(), DetailActivity.class);
                 intent.putExtra("news", news);
                 startActivity(intent);
             }
         });
+
+        btnRetry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                noInternetLayout.setVisibility(View.GONE);
+                loadData();
+            }
+        });
     }
 
-    class SportTask extends AsyncTask<String, Void, Document> {
+    class SportTask extends AsyncTask<String, Void, ArrayList<News>> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -108,42 +117,47 @@ public class SportFragment extends Fragment {
         }
 
         @Override
-        protected Document doInBackground(String... strings) {
-            Document document = null;
+        protected ArrayList<News> doInBackground(String... strings) {
+            arrSport = new ArrayList<>();
 
             try {
-                document = Jsoup.connect(strings[0]).get();
+                Document document = Jsoup.connect(strings[0]).get();
+
+                Elements elements = document.select("item");
+
+                News news = null;
+                arrSport = new ArrayList<>();
+
+                for (Element element: elements) {
+                    news = new News();
+                    news.setTitle(element.select("title").text());
+                    news.setThumbnail(Jsoup.parse(element.select("description").text()).select("img").attr("src"));
+                    news.setLink(element.select("link").text());
+                    news.setPubDate(element.select("pubDate").text());
+
+                    arrSport.add(news);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            return document;
+            return arrSport;
         }
 
         @Override
-        protected void onPostExecute(Document document) {
-            super.onPostExecute(document);
+        protected void onPostExecute(ArrayList<News> list) {
+            super.onPostExecute(list);
 
-            Elements elements = document.select("item");
+            if (list.size() > 0) {
+                adapter = new CustomArrayAdapter(getActivity(), R.layout.custom_list_item, list);
+                lvSport.setAdapter(adapter);
 
-            News news = null;
-            arrSport = new ArrayList<>();
-
-            for (Element element: elements) {
-                news = new News();
-                news.setTitle(element.select("title").text());
-                news.setThumbnail(Jsoup.parse(element.select("description").text()).select("img").attr("src"));
-                news.setLink(element.select("link").text());
-                news.setPubDate(element.select("pubDate").text());
-
-                arrSport.add(news);
+                progressBar.setVisibility(View.GONE);
+                lvSport.setVisibility(View.VISIBLE);
+            } else {
+                progressBar.setVisibility(View.GONE);
+                noInternetLayout.setVisibility(View.VISIBLE);
             }
-
-            adapter = new CustomArrayAdapter(getActivity(), R.layout.custom_list_item, arrSport);
-            lvSport.setAdapter(adapter);
-
-            progressBar.setVisibility(View.GONE);
-            lvSport.setVisibility(View.VISIBLE);
         }
     }
 }

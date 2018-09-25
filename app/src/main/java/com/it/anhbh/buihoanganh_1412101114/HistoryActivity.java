@@ -19,9 +19,9 @@ import com.it.anhbh.buihoanganh_1412101114.storages.InternalStorage;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class ReadRecentlyActivity extends AppCompatActivity {
+public class HistoryActivity extends AppCompatActivity {
     Toolbar toolbar;
-    ListView lvReadRecently;
+    ListView lvHistory;
     CustomArrayAdapter adapter;
     Button btnDeleteAll;
 
@@ -32,10 +32,10 @@ public class ReadRecentlyActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_read_recently);
+        setContentView(R.layout.activity_history);
 
         toolbar = findViewById(R.id.toolbar);
-        lvReadRecently = findViewById(R.id.lv_read_recently);
+        lvHistory = findViewById(R.id.lv_read_recently);
         btnDeleteAll = findViewById(R.id.btn_delete_all);
 
         internalStorage = new InternalStorage(this);
@@ -50,11 +50,11 @@ public class ReadRecentlyActivity extends AppCompatActivity {
     }
 
     private void loadData() {
-        arrReadRecently = internalStorage.readFile(Constants.FILE_READ_RECENTLY);
+        arrReadRecently = internalStorage.readFile(Constants.FILE_HISTORY);
         if (arrReadRecently != null) {
             Collections.reverse(arrReadRecently);
             adapter = new CustomArrayAdapter(this, R.layout.custom_list_item, arrReadRecently);
-            lvReadRecently.setAdapter(adapter);
+            lvHistory.setAdapter(adapter);
         }
     }
 
@@ -66,12 +66,12 @@ public class ReadRecentlyActivity extends AppCompatActivity {
             }
         });
 
-        lvReadRecently.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        lvHistory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 News news = arrReadRecently.get(position);
 
-                Intent intent = new Intent(ReadRecentlyActivity.this, DetailActivity.class);
+                Intent intent = new Intent(HistoryActivity.this, DetailActivity.class);
                 intent.putExtra("news", news);
                 startActivity(intent);
             }
@@ -80,14 +80,14 @@ public class ReadRecentlyActivity extends AppCompatActivity {
         btnDeleteAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AlertDialog.Builder(ReadRecentlyActivity.this, R.style.MyDialogTheme)
+                new AlertDialog.Builder(HistoryActivity.this, R.style.MyDialogTheme)
                         .setTitle("Xóa lịch sử")
                         .setMessage("Bạn có chắc chắn muốn xóa TOÀN BỘ lịch sử đọc tin?")
                         .setCancelable(false)
                         .setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                internalStorage.clearData(Constants.FILE_READ_RECENTLY);
+                                internalStorage.clearData(Constants.FILE_HISTORY);
 
                                 loadData();
                             }

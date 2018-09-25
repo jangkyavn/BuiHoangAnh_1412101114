@@ -28,4 +28,32 @@
         android:theme="@style/ProgressBarColor"
         android:visibility="gone" />
 
+    <LinearLayout
+        android:id="@+id/no_internet_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/tv_no_internet"
+            android:textColor="@color/colorBlack" />
+
+        <Button
+            android:id="@+id/btn_retry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/btn_retry_margin_top"
+            android:background="@drawable/custom_btn_retry"
+            android:text="@string/btn_retry"
+            android:textAllCaps="false"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/btn_retry_text_size" />
+
+    </LinearLayout>
+
 </RelativeLayout>

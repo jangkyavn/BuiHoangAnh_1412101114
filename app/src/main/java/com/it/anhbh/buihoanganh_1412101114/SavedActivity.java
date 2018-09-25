@@ -1,5 +1,7 @@
 package com.it.anhbh.buihoanganh_1412101114;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,9 +18,9 @@ import com.it.anhbh.buihoanganh_1412101114.storages.InternalStorage;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class SavedNewsActivity extends AppCompatActivity {
+public class SavedActivity extends AppCompatActivity {
     Toolbar toolbar;
-    ListView lvSavedNews;
+    ListView lvSaved;
     CustomArrayAdapter adapter;
 
     ArrayList<News> arrSavedNews;
@@ -28,10 +30,10 @@ public class SavedNewsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_saved_news);
+        setContentView(R.layout.activity_saved);
 
         toolbar = findViewById(R.id.toolbar);
-        lvSavedNews = findViewById(R.id.lv_saved_news);
+        lvSaved = findViewById(R.id.lv_saved_news);
 
         internalStorage = new InternalStorage(this);
 
@@ -44,11 +46,11 @@ public class SavedNewsActivity extends AppCompatActivity {
     }
 
     private void loadData() {
-        arrSavedNews = internalStorage.readFile(Constants.FILE_SAVED_NEWS);
+        arrSavedNews = internalStorage.readFile(Constants.FILE_SAVED);
         if (arrSavedNews != null) {
             Collections.reverse(arrSavedNews);
             adapter = new CustomArrayAdapter(this, R.layout.custom_list_item, arrSavedNews);
-            lvSavedNews.setAdapter(adapter);
+            lvSaved.setAdapter(adapter);
         }
     }
 
@@ -60,14 +62,41 @@ public class SavedNewsActivity extends AppCompatActivity {
             }
         });
 
-        lvSavedNews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        lvSaved.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 News news = arrSavedNews.get(position);
 
-                Intent intent = new Intent(SavedNewsActivity.this, DetailActivity.class);
+                Intent intent = new Intent(SavedActivity.this, DetailActivity.class);
                 intent.putExtra("news", news);
                 startActivity(intent);
+            }
+        });
+
+        lvSaved.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                new AlertDialog.Builder(SavedActivity.this, R.style.MyDialogTheme)
+                        .setTitle("Xóa tin đã lưu")
+                        .setMessage("Bạn có chắc chắn muốn xóa tin đã lưu này không?")
+                        .setCancelable(false)
+                        .setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                News news = arrSavedNews.get(position);
+                                internalStorage.removeObject(news, Constants.FILE_SAVED);
+
+                                loadData();
+                            }
+                        })
+                        .setNegativeButton("Hủy bỏ", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        }).show();
+
+                return true;
             }
         });
     }

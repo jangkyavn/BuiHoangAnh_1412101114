@@ -77,7 +77,8 @@ public class InternalStorage {
     public ArrayList<News> readFile(String fileName) {
         try {
             FileInputStream inputStream = activity.openFileInput(fileName);
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 
             StringBuffer buffer = new StringBuffer();
             String line = "";
@@ -91,6 +92,10 @@ public class InternalStorage {
             }.getType();
             // Cast json array follow type
             ArrayList<News> arrNews = new Gson().fromJson(buffer.toString(), listType);
+
+            bufferedReader.close();
+            inputStreamReader.close();
+            inputStream.close();
 
             return arrNews;
         } catch (FileNotFoundException e) {
@@ -117,9 +122,9 @@ public class InternalStorage {
     }
 
     public boolean isSaved(News news) {
-        ArrayList<News> arrNews = readFile(Constants.FILE_SAVED_NEWS);
+        ArrayList<News> arrNews = readFile(Constants.FILE_SAVED);
 
-        return arrNews != null ? isContain(arrNews, news) : false;
+        return arrNews != null && isContain(arrNews, news);
     }
 
     private boolean isContain(ArrayList<News> list, News object) {

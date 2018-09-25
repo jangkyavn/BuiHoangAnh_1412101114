@@ -11,4 +11,7 @@
 
     <dimen name="btn_bottom_layout_padding_left">10dp</dimen>
     <dimen name="divider_bottom_layout_width">1dp</dimen>
+
+    <dimen name="btn_retry_text_size">18sp</dimen>
+    <dimen name="btn_retry_margin_top">10dp</dimen>
 </resources>

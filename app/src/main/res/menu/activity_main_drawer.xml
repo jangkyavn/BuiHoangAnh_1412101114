@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <item android:title="Nội dung">
+    <item android:title="@string/nav_content_title">
         <menu>
             <item
                 android:id="@+id/nav_saved"
@@ -17,16 +17,17 @@
         </menu>
     </item>
 
-    <item android:title="Sản phẩm">
+    <item android:title="@string/nav_product_title">
         <menu>
             <item
-                android:id="@+id/nav_review"
+                android:id="@+id/nav_review_app"
                 android:icon="@drawable/ic_menu_star_border_black"
-                android:title="@string/nav_read_review_app" />
+                android:title="@string/nav_review_app_title" />
+
             <item
                 android:id="@+id/nav_send_email"
                 android:icon="@drawable/ic_menu_mail_outline_black"
-                android:title="@string/nav_send_email" />
+                android:title="@string/nav_send_email_title" />
         </menu>
     </item>
 
