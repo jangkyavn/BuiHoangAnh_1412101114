@@ -3,12 +3,10 @@ package com.it.anhbh.buihoanganh_1412101114.fragments;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +15,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.it.anhbh.buihoanganh_1412101114.DetailActivity;
 import com.it.anhbh.buihoanganh_1412101114.R;
@@ -29,7 +26,6 @@ import com.it.anhbh.buihoanganh_1412101114.storages.InternalStorage;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
@@ -39,6 +35,8 @@ public class NewsDayFragment extends Fragment {
     SwipeRefreshLayout refreshLayout;
     ListView lvNewsDay;
     ProgressBar progressBar;
+    LinearLayout noInternetLayout;
+    Button btnRetry;
 
     CustomArrayAdapter adapter;
     ArrayList<News> arrNewsDay;
@@ -52,6 +50,8 @@ public class NewsDayFragment extends Fragment {
         refreshLayout = view.findViewById(R.id.refresh_layout);
         lvNewsDay = view.findViewById(R.id.lv_news_day);
         progressBar = view.findViewById(R.id.progress_bar);
+        noInternetLayout = view.findViewById(R.id.no_internet_layout);
+        btnRetry = view.findViewById(R.id.btn_retry);
 
         internalStorage = new InternalStorage(getActivity());
 
@@ -85,16 +85,24 @@ public class NewsDayFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 News news = arrNewsDay.get(position);
-                internalStorage.addObject(news, Constants.FILE_READ_RECENTLY);
+                internalStorage.addObject(news, Constants.FILE_HISTORY);
 
                 Intent intent = new Intent(getActivity(), DetailActivity.class);
                 intent.putExtra("news", news);
                 startActivity(intent);
             }
         });
+
+        btnRetry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                noInternetLayout.setVisibility(View.GONE);
+                loadData();
+            }
+        });
     }
 
-    class NewsDayTask extends AsyncTask<String, Void, Document> {
+    class NewsDayTask extends AsyncTask<String, Void, ArrayList<News>> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -104,42 +112,48 @@ public class NewsDayFragment extends Fragment {
         }
 
         @Override
-        protected Document doInBackground(String... strings) {
-            Document document = null;
+        protected ArrayList<News> doInBackground(String... strings) {
+            arrNewsDay = new ArrayList<>();
 
             try {
-                document = Jsoup.connect(strings[0]).get();
+                Document document = Jsoup.connect(strings[0]).get();
+
+                Elements elements = document.select("item");
+
+                News news = null;
+                arrNewsDay = new ArrayList<>();
+
+                for (Element element : elements) {
+                    news = new News();
+                    news.setTitle(element.select("title").text());
+                    news.setThumbnail(Jsoup.parse(element.select("description").text()).select("img").attr("src"));
+                    news.setLink(element.select("link").text());
+                    news.setPubDate(element.select("pubDate").text());
+
+                    arrNewsDay.add(news);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            return document;
+            return arrNewsDay;
         }
 
         @Override
-        protected void onPostExecute(Document document) {
-            super.onPostExecute(document);
+        protected void onPostExecute(ArrayList<News> list) {
+            super.onPostExecute(list);
 
-            Elements elements = document.select("item");
+            if (list.size() > 0) {
+                adapter = new CustomArrayAdapter(getActivity(), R.layout.custom_list_item, list);
+                lvNewsDay.setAdapter(adapter);
 
-            News news = null;
-            arrNewsDay = new ArrayList<>();
-
-            for (Element element : elements) {
-                news = new News();
-                news.setTitle(element.select("title").text());
-                news.setThumbnail(Jsoup.parse(element.select("description").text()).select("img").attr("src"));
-                news.setLink(element.select("link").text());
-                news.setPubDate(element.select("pubDate").text());
-
-                arrNewsDay.add(news);
+                progressBar.setVisibility(View.GONE);
+                lvNewsDay.setVisibility(View.VISIBLE);
+                noInternetLayout.setVisibility(View.GONE);
+            } else {
+                progressBar.setVisibility(View.GONE);
+                noInternetLayout.setVisibility(View.VISIBLE);
             }
-
-            adapter = new CustomArrayAdapter(getActivity(), R.layout.custom_list_item, arrNewsDay);
-            lvNewsDay.setAdapter(adapter);
-
-            progressBar.setVisibility(View.GONE);
-            lvNewsDay.setVisibility(View.VISIBLE);
         }
     }
 }

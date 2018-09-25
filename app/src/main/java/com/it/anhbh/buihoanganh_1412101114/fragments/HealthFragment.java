@@ -38,6 +38,8 @@ public class HealthFragment extends Fragment {
     SwipeRefreshLayout refreshLayout;
     ListView lvHealth;
     ProgressBar progressBar;
+    LinearLayout noInternetLayout;
+    Button btnRetry;
 
     CustomArrayAdapter adapter;
     ArrayList<News> arrHealth;
@@ -51,6 +53,8 @@ public class HealthFragment extends Fragment {
         refreshLayout = view.findViewById(R.id.refresh_layout);
         lvHealth = view.findViewById(R.id.lv_health);
         progressBar = view.findViewById(R.id.progress_bar);
+        noInternetLayout = view.findViewById(R.id.no_internet_layout);
+        btnRetry = view.findViewById(R.id.btn_retry);
 
         internalStorage = new InternalStorage(getActivity());
 
@@ -85,16 +89,24 @@ public class HealthFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 News news = arrHealth.get(position);
 
-                internalStorage.addObject(news, Constants.FILE_READ_RECENTLY);
+                internalStorage.addObject(news, Constants.FILE_HISTORY);
 
                 Intent intent = new Intent(getActivity(), DetailActivity.class);
                 intent.putExtra("news", news);
                 startActivity(intent);
             }
         });
+
+        btnRetry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                noInternetLayout.setVisibility(View.GONE);
+                loadData();
+            }
+        });
     }
 
-    class HealthTask extends AsyncTask<String, Void, Document> {
+    class HealthTask extends AsyncTask<String, Void, ArrayList<News>> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -104,42 +116,47 @@ public class HealthFragment extends Fragment {
         }
 
         @Override
-        protected Document doInBackground(String... strings) {
-            Document document = null;
+        protected ArrayList<News> doInBackground(String... strings) {
+            arrHealth = new ArrayList<>();
 
             try {
-                document = Jsoup.connect(strings[0]).get();
+                Document document = Jsoup.connect(strings[0]).get();
+
+                Elements elements = document.select("item");
+
+                News news = null;
+                arrHealth = new ArrayList<>();
+
+                for (Element element : elements) {
+                    news = new News();
+                    news.setTitle(element.select("title").text());
+                    news.setThumbnail(Jsoup.parse(element.select("description").text()).select("img").attr("src"));
+                    news.setLink(element.select("link").text());
+                    news.setPubDate(element.select("pubDate").text());
+
+                    arrHealth.add(news);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            return document;
+            return arrHealth;
         }
 
         @Override
-        protected void onPostExecute(Document document) {
-            super.onPostExecute(document);
+        protected void onPostExecute(ArrayList<News> list) {
+            super.onPostExecute(list);
 
-            Elements elements = document.select("item");
+            if (list.size() > 0) {
+                adapter = new CustomArrayAdapter(getActivity(), R.layout.custom_list_item, list);
+                lvHealth.setAdapter(adapter);
 
-            News news = null;
-            arrHealth = new ArrayList<>();
-
-            for (Element element : elements) {
-                news = new News();
-                news.setTitle(element.select("title").text());
-                news.setThumbnail(Jsoup.parse(element.select("description").text()).select("img").attr("src"));
-                news.setLink(element.select("link").text());
-                news.setPubDate(element.select("pubDate").text());
-
-                arrHealth.add(news);
+                progressBar.setVisibility(View.GONE);
+                lvHealth.setVisibility(View.VISIBLE);
+            } else {
+                progressBar.setVisibility(View.GONE);
+                noInternetLayout.setVisibility(View.VISIBLE);
             }
-
-            adapter = new CustomArrayAdapter(getActivity(), R.layout.custom_list_item, arrHealth);
-            lvHealth.setAdapter(adapter);
-
-            progressBar.setVisibility(View.GONE);
-            lvHealth.setVisibility(View.VISIBLE);
         }
     }
 }

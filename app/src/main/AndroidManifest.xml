@@ -27,11 +27,11 @@
             android:name=".DetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ReadRecentlyActivity"
+            android:name=".HistoryActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".SavedNewsActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:name=".SavedActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

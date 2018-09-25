@@ -1,6 +1,7 @@
 package com.it.anhbh.buihoanganh_1412101114;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -60,10 +61,10 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (internalStorage.isSaved(news)) {
-                    internalStorage.removeObject(news, Constants.FILE_SAVED_NEWS);
+                    internalStorage.removeObject(news, Constants.FILE_SAVED);
                     Toast.makeText(DetailActivity.this, "Xóa tin đã lưu thành công", Toast.LENGTH_SHORT).show();
                 } else {
-                    internalStorage.addObject(news, Constants.FILE_SAVED_NEWS);
+                    internalStorage.addObject(news, Constants.FILE_SAVED);
                     Toast.makeText(DetailActivity.this, "Lưu tin thành công", Toast.LENGTH_SHORT).show();
                 }
             }

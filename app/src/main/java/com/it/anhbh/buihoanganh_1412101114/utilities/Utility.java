@@ -60,10 +60,8 @@ public class Utility {
     }
 
     public static boolean isConnected(Activity activity) {
-        ConnectivityManager cm = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-
-        return netInfo != null && netInfo.isConnectedOrConnecting();
+        ConnectivityManager connectionManager = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return connectionManager.getActiveNetworkInfo().isConnected();
     }
 
     public static String getDeviceInformation() {
