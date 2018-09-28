@@ -14,4 +14,7 @@
 
     <dimen name="btn_retry_text_size">18sp</dimen>
     <dimen name="btn_retry_margin_top">10dp</dimen>
+
+    <dimen name="nav_footer_padding_start">15dp</dimen>
+    <dimen name="nav_footer_padding_end">0dp</dimen>
 </resources>

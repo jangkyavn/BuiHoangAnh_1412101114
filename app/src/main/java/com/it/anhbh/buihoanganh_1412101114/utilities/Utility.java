@@ -59,11 +59,6 @@ public class Utility {
         return "Vài giây trước";
     }
 
-    public static boolean isConnected(Activity activity) {
-        ConnectivityManager connectionManager = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
-        return connectionManager.getActiveNetworkInfo().isConnected();
-    }
-
     public static String getDeviceInformation() {
         String manufacturer = Build.MANUFACTURER;
         String model = Build.MODEL;
