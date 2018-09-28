@@ -1,5 +1,7 @@
 package com.it.anhbh.buihoanganh_1412101114;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,10 +14,16 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.it.anhbh.buihoanganh_1412101114.adapters.ViewPagerAdapter;
+import com.it.anhbh.buihoanganh_1412101114.constants.Constants;
+import com.it.anhbh.buihoanganh_1412101114.models.News;
 import com.it.anhbh.buihoanganh_1412101114.utilities.Utility;
+
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     DrawerLayout drawerLayout;
@@ -23,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     TabLayout tabLayout;
     ViewPager viewPager;
     NavigationView navigationView;
+    TextView tvCopyright, tvISource, tvVersion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +43,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         tabLayout = findViewById(R.id.tab_layout);
         viewPager = findViewById(R.id.view_pager);
         navigationView = findViewById(R.id.nav_view);
+        tvCopyright = findViewById(R.id.tv_copyright);
+        tvISource = findViewById(R.id.tv_isource);
+        tvVersion = findViewById(R.id.tv_version);
 
         setSupportActionBar(toolbar);
 
@@ -47,6 +59,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         viewPager.setAdapter(adapter);
         tabLayout.setTabRippleColor(null);
         tabLayout.setupWithViewPager(viewPager);
+
+        tvCopyright.setText(Html.fromHtml("&#169; " + Calendar.getInstance().get(Calendar.YEAR) + " - AnhBH"));
+        tvISource.setText(Html.fromHtml("Nguồn tin theo <strong>24h.com.vn</strong>"));
+        tvVersion.setText("Phiên bản " + BuildConfig.VERSION_NAME);
     }
 
     @Override
@@ -78,5 +94,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(MainActivity.this, R.style.MyDialogTheme)
+                .setTitle("Xác nhận")
+                .setMessage("Bạn có chắc chắn muốn thoát ứng dụng không?")
+                .setCancelable(false)
+                .setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                })
+                .setNegativeButton("Hủy bỏ", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                }).show();
     }
 }
