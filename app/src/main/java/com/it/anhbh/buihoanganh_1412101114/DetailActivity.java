@@ -1,5 +1,6 @@
 package com.it.anhbh.buihoanganh_1412101114;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -27,6 +28,7 @@ public class DetailActivity extends AppCompatActivity {
     InternalStorage internalStorage;
     News news;
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

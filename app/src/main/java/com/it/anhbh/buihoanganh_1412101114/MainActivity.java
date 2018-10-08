@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     TabLayout tabLayout;
     ViewPager viewPager;
     NavigationView navigationView;
-    TextView tvCopyright, tvISource, tvVersion;
+    TextView tvFooter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +43,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         tabLayout = findViewById(R.id.tab_layout);
         viewPager = findViewById(R.id.view_pager);
         navigationView = findViewById(R.id.nav_view);
-        tvCopyright = findViewById(R.id.tv_copyright);
-        tvISource = findViewById(R.id.tv_isource);
-        tvVersion = findViewById(R.id.tv_version);
+        tvFooter = findViewById(R.id.tv_footer);
 
         setSupportActionBar(toolbar);
 
@@ -60,9 +58,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         tabLayout.setTabRippleColor(null);
         tabLayout.setupWithViewPager(viewPager);
 
-        tvCopyright.setText(Html.fromHtml("&#169; " + Calendar.getInstance().get(Calendar.YEAR) + " - AnhBH"));
-        tvISource.setText(Html.fromHtml("Nguồn tin theo <strong>24h.com.vn</strong>"));
-        tvVersion.setText("Phiên bản " + BuildConfig.VERSION_NAME);
+        String footerContent = ("&#169; Copyright " + Calendar.getInstance().get(Calendar.YEAR) + " - <strong>AnhBui995</strong><br />") +
+                "Nguồn tin theo <strong>24h.com.vn</strong><br />" +
+                "Phiên bản " + "<strong> " + BuildConfig.VERSION_NAME + "</strong>";
+        tvFooter.setText(Html.fromHtml(footerContent));
     }
 
     @Override
@@ -80,9 +79,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(intent);
                 break;
             case R.id.nav_review_app:
-                /*Uri uri = Uri.parse("");
+                Uri uri = Uri.parse("https://play.google.com/store/apps/details?id=com.it.anhbh.buihoanganh_1412101114");
                 intent = new Intent(Intent.ACTION_VIEW, uri);
-                startActivity(intent);*/
+                startActivity(intent);
                 break;
             case R.id.nav_send_email:
                 intent = new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:" + "anhbh995@gmail.com"));

@@ -55,32 +55,19 @@
         app:menu="@menu/activity_main_drawer">
 
         <LinearLayout
-            android:id="@+id/nav_footer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:background="@color/colorBlueGreyDark"
             android:orientation="vertical"
-            android:paddingEnd="@dimen/nav_footer_padding_end"
-            android:paddingStart="@dimen/nav_footer_padding_start">
+            android:paddingStart="@dimen/nav_footer_padding_start"
+            android:paddingEnd="@dimen/nav_footer_padding_end">
 
             <TextView
-                android:id="@+id/tv_copyright"
+                android:id="@+id/tv_footer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorGray" />
-
-            <TextView
-                android:id="@+id/tv_isource"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorGray" />
-
-            <TextView
-                android:id="@+id/tv_version"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorGray" />
+                android:textColor="@color/colorDarkGray" />
 
         </LinearLayout>
 

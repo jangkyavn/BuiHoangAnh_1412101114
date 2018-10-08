@@ -35,21 +35,20 @@ public class CustomArrayAdapter extends ArrayAdapter<News> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        View view = convertView;
         ViewHolder holder = null;
 
-        if (view == null) {
+        if (convertView == null) {
             LayoutInflater inflater = this.activity.getLayoutInflater();
-            view = inflater.inflate(this.resource, null);
+            convertView = inflater.inflate(this.resource, null);
 
             holder = new ViewHolder();
-            holder.tvTitle = view.findViewById(R.id.tv_title);
-            holder.tvPubDate = view.findViewById(R.id.tv_pubdate);
-            holder.ivThumbnail = view.findViewById(R.id.iv_thumbnail);
+            holder.tvTitle = convertView.findViewById(R.id.tv_title);
+            holder.tvPubDate = convertView.findViewById(R.id.tv_pubdate);
+            holder.ivThumbnail = convertView.findViewById(R.id.iv_thumbnail);
 
-            view.setTag(holder);
+            convertView.setTag(holder);
         } else {
-            holder = (ViewHolder) view.getTag();
+            holder = (ViewHolder) convertView.getTag();
         }
 
         News news = this.objects.get(position);
@@ -58,7 +57,7 @@ public class CustomArrayAdapter extends ArrayAdapter<News> {
         holder.tvPubDate.setText(Utility.getPeriod(news.getPubDate()));
         Picasso.get().load(news.getThumbnail()).into(holder.ivThumbnail);
 
-        return view;
+        return convertView;
     }
 
     class ViewHolder {
