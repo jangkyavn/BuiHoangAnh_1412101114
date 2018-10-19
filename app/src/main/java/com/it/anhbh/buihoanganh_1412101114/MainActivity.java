@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -16,7 +17,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.it.anhbh.buihoanganh_1412101114.adapters.ViewPagerAdapter;
 import com.it.anhbh.buihoanganh_1412101114.constants.Constants;
@@ -32,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     ViewPager viewPager;
     NavigationView navigationView;
     TextView tvFooter;
+    RelativeLayout initialLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,25 +49,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         viewPager = findViewById(R.id.view_pager);
         navigationView = findViewById(R.id.nav_view);
         tvFooter = findViewById(R.id.tv_footer);
+        initialLayout = findViewById(R.id.initial_layout);
 
-        setSupportActionBar(toolbar);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                initialLayout.setVisibility(View.GONE);
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
+                setSupportActionBar(toolbar);
 
-        navigationView.setNavigationItemSelectedListener(this);
+                ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(MainActivity.this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                drawerLayout.addDrawerListener(toggle);
+                toggle.syncState();
 
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(adapter);
-        tabLayout.setTabRippleColor(null);
-        tabLayout.setupWithViewPager(viewPager);
+                navigationView.setNavigationItemSelectedListener(MainActivity.this);
 
-        String footerContent = ("&#169; Copyright " + Calendar.getInstance().get(Calendar.YEAR) + " - <strong>AnhBui995</strong><br />") +
-                "Nguồn tin theo <strong>24h.com.vn</strong><br />" +
-                "Phiên bản " + "<strong> " + BuildConfig.VERSION_NAME + "</strong>";
-        tvFooter.setText(Html.fromHtml(footerContent));
+                ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+                viewPager.setAdapter(adapter);
+                tabLayout.setTabRippleColor(null);
+                tabLayout.setupWithViewPager(viewPager);
+
+                String footerContent = ("&#169; Copyright " + Calendar.getInstance().get(Calendar.YEAR) + " - <strong>AnhBui995</strong><br />") +
+                        "Nguồn tin theo <strong>24h.com.vn</strong><br />" +
+                        "Phiên bản " + "<strong> " + BuildConfig.VERSION_NAME + "</strong>";
+                tvFooter.setText(Html.fromHtml(footerContent));
+            }
+        }, 2000);
     }
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -97,21 +111,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        new AlertDialog.Builder(MainActivity.this, R.style.MyDialogTheme)
-                .setTitle("Xác nhận")
-                .setMessage("Bạn có chắc chắn muốn thoát ứng dụng không?")
-                .setCancelable(false)
-                .setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                })
-                .setNegativeButton("Hủy bỏ", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                }).show();
+        finish();
     }
 }

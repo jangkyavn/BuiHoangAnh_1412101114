@@ -4,18 +4,18 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="btn_close">Đóng</string>
+    <string name="btn_back">Quay lại</string>
     <string name="btn_save">Lưu tin</string>
     <string name="btn_share">Chia sẻ</string>
 
     <string name="nav_content_title">Nội dung</string>
     <string name="nav_product_title">Sản phẩm</string>
-    <string name="nav_saved_news_title">Các tin đã lưu</string>
-    <string name="nav_read_recently_title">Đọc gần đây</string>
+    <string name="nav_saved_news_title">Tin đã lưu</string>
+    <string name="nav_read_recently_title">Tin đã đọc</string>
     <string name="nav_review_app_title">Đánh giá ứng dụng</string>
     <string name="nav_send_email_title">Gửi email góp ý</string>
 
-    <string name="toolbar_saved_news_title">Tin đã lưu</string>
+    <string name="toolbar_saved_news_title">Các tin đã lưu</string>
     <string name="toolbar_read_recently_title">Lịch sử đọc tin</string>
     <string name="toolbar_about_title">Giới thiệu về ứng dụng</string>
 
