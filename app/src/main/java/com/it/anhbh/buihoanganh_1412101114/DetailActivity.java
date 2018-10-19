@@ -1,29 +1,26 @@
 package com.it.anhbh.buihoanganh_1412101114;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
-import android.widget.ImageButton;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.it.anhbh.buihoanganh_1412101114.constants.Constants;
 import com.it.anhbh.buihoanganh_1412101114.models.News;
 import com.it.anhbh.buihoanganh_1412101114.storages.InternalStorage;
 
-import java.util.ArrayList;
-
 public class DetailActivity extends AppCompatActivity {
     WebView webView;
-    Button btnClose, btnSave, btnShare;
+    Button btnBack, btnSave, btnShare;
 
     InternalStorage internalStorage;
     News news;
@@ -35,7 +32,7 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
 
         webView = findViewById(R.id.web_view);
-        btnClose = findViewById(R.id.btn_close);
+        btnBack = findViewById(R.id.btn_back);
         btnSave = findViewById(R.id.btn_save);
         btnShare = findViewById(R.id.btn_share);
 
@@ -45,15 +42,15 @@ public class DetailActivity extends AppCompatActivity {
         news = (News) intent.getSerializableExtra("news");
 
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.setWebViewClient(new WebViewClient());
         webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         webView.loadUrl(news.getLink());
+        webView.setWebViewClient(new WebViewClient());
 
         registerEvents();
     }
 
     private void registerEvents() {
-        btnClose.setOnClickListener(new View.OnClickListener() {
+        btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
