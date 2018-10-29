@@ -15,6 +15,8 @@
     <string name="nav_review_app_title">Đánh giá ứng dụng</string>
     <string name="nav_send_email_title">Gửi email góp ý</string>
 
+    <string name="menu_search">Tìm kiếm</string>
+
     <string name="toolbar_saved_news_title">Các tin đã lưu</string>
     <string name="toolbar_read_recently_title">Lịch sử đọc tin</string>
     <string name="toolbar_about_title">Giới thiệu về ứng dụng</string>

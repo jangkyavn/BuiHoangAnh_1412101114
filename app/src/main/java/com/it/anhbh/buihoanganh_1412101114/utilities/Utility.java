@@ -7,13 +7,18 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.util.Log;
 
+import com.it.anhbh.buihoanganh_1412101114.models.News;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.DateFormat;
+import java.text.Normalizer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
