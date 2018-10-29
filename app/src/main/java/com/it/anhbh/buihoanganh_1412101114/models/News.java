@@ -8,16 +8,6 @@ public class News implements Serializable {
     private String link;
     private String pubDate;
 
-    public News() {
-    }
-
-    public News(String title, String thumbnail, String link, String pubDate) {
-        this.title = title;
-        this.thumbnail = thumbnail;
-        this.link = link;
-        this.pubDate = pubDate;
-    }
-
     public String getTitle() {
         return title;
     }

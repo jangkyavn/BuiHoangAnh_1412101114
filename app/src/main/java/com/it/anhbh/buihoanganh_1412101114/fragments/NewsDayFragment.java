@@ -7,7 +7,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -15,6 +19,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 
 import com.it.anhbh.buihoanganh_1412101114.DetailActivity;
 import com.it.anhbh.buihoanganh_1412101114.R;
@@ -22,6 +27,7 @@ import com.it.anhbh.buihoanganh_1412101114.adapters.CustomArrayAdapter;
 import com.it.anhbh.buihoanganh_1412101114.constants.Constants;
 import com.it.anhbh.buihoanganh_1412101114.models.News;
 import com.it.anhbh.buihoanganh_1412101114.storages.InternalStorage;
+import com.it.anhbh.buihoanganh_1412101114.utilities.Utility;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -117,7 +123,6 @@ public class NewsDayFragment extends Fragment {
 
             try {
                 Document document = Jsoup.connect(strings[0]).get();
-
                 Elements elements = document.select("item");
 
                 News news = null;
