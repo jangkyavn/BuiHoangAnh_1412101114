@@ -7,7 +7,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -15,13 +19,15 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.it.anhbh.buihoanganh_1412101114.DetailActivity;
 import com.it.anhbh.buihoanganh_1412101114.R;
 import com.it.anhbh.buihoanganh_1412101114.adapters.CustomArrayAdapter;
 import com.it.anhbh.buihoanganh_1412101114.constants.Constants;
 import com.it.anhbh.buihoanganh_1412101114.models.News;
-import com.it.anhbh.buihoanganh_1412101114.storages.InternalStorage;
+import com.it.anhbh.buihoanganh_1412101114.storages.DBManager;
+import com.it.anhbh.buihoanganh_1412101114.utilities.Utility;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -37,23 +43,27 @@ public class EntertainmentFragment extends Fragment {
     ProgressBar progressBar;
     LinearLayout noInternetLayout;
     Button btnRetry;
+    SearchView searchView;
+    TextView tvNotFound;
 
     CustomArrayAdapter adapter;
     ArrayList<News> arrEntertainment;
-    InternalStorage internalStorage;
+    DBManager dbManager;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_entertainment, container, false);
+        setHasOptionsMenu(true);
 
         refreshLayout = view.findViewById(R.id.refresh_layout);
         lvEntertainment = view.findViewById(R.id.lv_entertainment);
         progressBar = view.findViewById(R.id.progress_bar);
         noInternetLayout = view.findViewById(R.id.no_internet_layout);
         btnRetry = view.findViewById(R.id.btn_retry);
+        tvNotFound = view.findViewById(R.id.tv_not_found);
 
-        internalStorage = new InternalStorage(getActivity());
+        dbManager = new DBManager(getActivity());
 
         loadData();
         registerEvents();
@@ -63,13 +73,17 @@ public class EntertainmentFragment extends Fragment {
 
     private void loadData() {
         EntertainmentTask task = new EntertainmentTask();
-        task.execute("https://www.24h.com.vn/upload/rss/giaitri.rss");
+        task.execute(Constants.LINK_ENTERTAINMENT);
     }
 
     private void registerEvents() {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                if (searchView != null) {
+                    searchView.setIconified(true);
+                }
+
                 refreshLayout.setColorSchemeColors(getActivity().getResources().getColor(R.color.colorPrimary));
                 refreshLayout.postDelayed(new Runnable() {
                     @Override
@@ -85,11 +99,10 @@ public class EntertainmentFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 News news = arrEntertainment.get(position);
-
-                internalStorage.addObject(news, Constants.FILE_HISTORY);
+                dbManager.addNews(news, DBManager.TABLE_HISTORY);
 
                 Intent intent = new Intent(getActivity(), DetailActivity.class);
-                intent.putExtra("news", news);
+                intent.putExtra(Constants.KEY_NEWS, news);
                 startActivity(intent);
             }
         });
@@ -119,17 +132,17 @@ public class EntertainmentFragment extends Fragment {
             try {
                 Document document = Jsoup.connect(strings[0]).get();
 
-                Elements elements = document.select("item");
+                Elements elements = document.select(Constants.NodeName.ITEM);
 
                 News news = null;
                 arrEntertainment = new ArrayList<>();
 
                 for (Element element : elements) {
                     news = new News();
-                    news.setTitle(element.select("title").text());
-                    news.setThumbnail(Jsoup.parse(element.select("description").text()).select("img").attr("src"));
-                    news.setLink(element.select("link").text());
-                    news.setPubDate(element.select("pubDate").text());
+                    news.setTitle(element.select(Constants.NodeName.TITLE).text());
+                    news.setThumbnail(Jsoup.parse(element.select(Constants.NodeName.DESCRIPTION).text()).select(Constants.NodeName.IMG).attr(Constants.Attribute.SRC));
+                    news.setLink(element.select(Constants.NodeName.LINK).text());
+                    news.setPubDate(element.select(Constants.NodeName.PUB_DATE).text());
 
                     arrEntertainment.add(news);
                 }
@@ -155,5 +168,50 @@ public class EntertainmentFragment extends Fragment {
                 noInternetLayout.setVisibility(View.VISIBLE);
             }
         }
+    }
+
+    private void loadFilterData(String keyword) {
+        ArrayList<News> filterList = new ArrayList<>();
+
+        if (searchView != null) {
+            for (News item : arrEntertainment) {
+                if (Utility.removeAccents(item.getTitle().toLowerCase()).contains(Utility.removeAccents(keyword.toLowerCase()))) {
+                    filterList.add(item);
+                }
+            }
+        } else {
+            filterList = arrEntertainment;
+        }
+
+        adapter = new CustomArrayAdapter(getActivity(), R.layout.custom_list_item, filterList);
+        lvEntertainment.setAdapter(adapter);
+
+        if (filterList.size() > 0) {
+            tvNotFound.setVisibility(View.GONE);
+        } else {
+            tvNotFound.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.activity_main_menu, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.menu_search);
+        searchView = (SearchView) searchItem.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                loadFilterData(s);
+
+                return false;
+            }
+        });
     }
 }

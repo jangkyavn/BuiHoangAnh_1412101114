@@ -71,4 +71,9 @@ public class Utility {
 
         return manufacturer.toUpperCase() + " " + model + ", Android: " + version;
     }
+
+    public static String removeAccents(String text) {
+        return text == null ? null : Normalizer.normalize(text, Normalizer.Form.NFD)
+                .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+    }
 }

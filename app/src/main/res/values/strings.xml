@@ -15,14 +15,20 @@
     <string name="nav_review_app_title">Đánh giá ứng dụng</string>
     <string name="nav_send_email_title">Gửi email góp ý</string>
 
-    <string name="menu_search">Tìm kiếm</string>
-
     <string name="toolbar_saved_news_title">Các tin đã lưu</string>
-    <string name="toolbar_read_recently_title">Lịch sử đọc tin</string>
-    <string name="toolbar_about_title">Giới thiệu về ứng dụng</string>
+    <string name="toolbar_read_recently_title">Các tin đã đọc</string>
 
-    <string name="btn_delete_all">Xóa tất cả</string>
+    <string name="menu_delete_all">Xóa tất cả</string>
+    <string name="menu_search">Tìm kiếm</string>
 
     <string name="tv_no_internet">Không thể lấy dữ liệu.\nVui lòng kiểm tra lại kết nối mạng.</string>
     <string name="btn_retry">Thử lại</string>
+
+    <string name="btn_text_agree">Đồng ý</string>
+    <string name="btn_text_cancel">Hủy bỏ</string>
+
+    <string name="tv_no_saved_news">Không có tin tức nào được lưu.</string>
+    <string name="tv_no_read_news">Không có tin tức nào được đọc.</string>
+
+    <string name="tv_not_found">Không tìm thấy kết quả.</string>
 </resources>

@@ -1,7 +1,5 @@
 package com.it.anhbh.buihoanganh_1412101114;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,11 +18,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.it.anhbh.buihoanganh_1412101114.adapters.ViewPagerAdapter;
 import com.it.anhbh.buihoanganh_1412101114.constants.Constants;
-import com.it.anhbh.buihoanganh_1412101114.models.News;
 import com.it.anhbh.buihoanganh_1412101114.utilities.Utility;
 
 import java.util.Calendar;
@@ -69,14 +65,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 tabLayout.setTabRippleColor(null);
                 tabLayout.setupWithViewPager(viewPager);
 
-                String footerContent = ("&#169; Copyright " + Calendar.getInstance().get(Calendar.YEAR) + " - <strong>AnhBui995</strong><br />") +
-                        "Nguồn tin theo <strong>24h.com.vn</strong><br />" +
+                String footerContent = ("&#169; Copyright " + Calendar.getInstance().get(Calendar.YEAR) + " - <strong>" + Constants.DEVELOPER_NAME + "</strong><br />") +
+                        "Nguồn tin theo <strong>" + Constants.NEWS_SOURCE + "</strong><br />" +
                         "Phiên bản " + "<strong> " + BuildConfig.VERSION_NAME + "</strong>";
                 tvFooter.setText(Html.fromHtml(footerContent));
             }
         }, 2000);
     }
-
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -93,12 +88,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(intent);
                 break;
             case R.id.nav_review_app:
-                Uri uri = Uri.parse("https://play.google.com/store/apps/details?id=com.it.anhbh.buihoanganh_1412101114");
+                Uri uri = Uri.parse(Constants.LINK_APP);
                 intent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);
                 break;
             case R.id.nav_send_email:
-                intent = new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:" + "anhbh995@gmail.com"));
+                intent = new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:" + Constants.EMAIL_ADMIN));
                 intent.putExtra(Intent.EXTRA_SUBJECT, "[" + getResources().getString(R.string.app_name) + "] Góp ý cho phiên bản " + BuildConfig.VERSION_NAME + " (trên " + Utility.getDeviceInformation() + ")");
                 intent.putExtra(Intent.EXTRA_TEXT, "");
                 startActivity(intent);

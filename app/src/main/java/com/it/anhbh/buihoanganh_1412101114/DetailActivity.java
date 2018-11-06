@@ -1,28 +1,25 @@
 package com.it.anhbh.buihoanganh_1412101114;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.Window;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
-import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.it.anhbh.buihoanganh_1412101114.constants.Constants;
 import com.it.anhbh.buihoanganh_1412101114.models.News;
-import com.it.anhbh.buihoanganh_1412101114.storages.InternalStorage;
+import com.it.anhbh.buihoanganh_1412101114.storages.DBManager;
 
 public class DetailActivity extends AppCompatActivity {
     WebView webView;
     Button btnBack, btnSave, btnShare;
 
-    InternalStorage internalStorage;
+    DBManager dbManager;
     News news;
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -36,10 +33,10 @@ public class DetailActivity extends AppCompatActivity {
         btnSave = findViewById(R.id.btn_save);
         btnShare = findViewById(R.id.btn_share);
 
-        internalStorage = new InternalStorage(this);
+        dbManager = new DBManager(this);
 
         Intent intent = getIntent();
-        news = (News) intent.getSerializableExtra("news");
+        news = (News) intent.getSerializableExtra(Constants.KEY_NEWS);
 
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
@@ -60,11 +57,11 @@ public class DetailActivity extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (internalStorage.isSaved(news)) {
-                    internalStorage.removeObject(news, Constants.FILE_SAVED);
+                if (dbManager.isSaved(news)) {
+                    dbManager.deleteNews(news, DBManager.TABLE_SAVED);
                     Toast.makeText(DetailActivity.this, "Xóa tin đã lưu thành công", Toast.LENGTH_SHORT).show();
                 } else {
-                    internalStorage.addObject(news, Constants.FILE_SAVED);
+                    dbManager.addNews(news, DBManager.TABLE_SAVED);
                     Toast.makeText(DetailActivity.this, "Lưu tin thành công", Toast.LENGTH_SHORT).show();
                 }
             }

@@ -17,4 +17,6 @@
 
     <dimen name="nav_footer_padding_start">15dp</dimen>
     <dimen name="nav_footer_padding_end">0dp</dimen>
+
+    <dimen name="tv_not_found_padding_top">30dp</dimen>
 </resources>
