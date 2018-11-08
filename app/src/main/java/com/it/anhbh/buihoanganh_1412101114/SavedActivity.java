@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.it.anhbh.buihoanganh_1412101114.adapters.CustomArrayAdapter;
 import com.it.anhbh.buihoanganh_1412101114.constants.Constants;
 import com.it.anhbh.buihoanganh_1412101114.models.News;
-import com.it.anhbh.buihoanganh_1412101114.storages.DBManager;
+import com.it.anhbh.buihoanganh_1412101114.storages.InternalStorage;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,7 +27,7 @@ public class SavedActivity extends AppCompatActivity {
     CustomArrayAdapter adapter;
     ArrayList<News> arrSaved;
 
-    DBManager dbManager;
+    InternalStorage internalStorage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +38,7 @@ public class SavedActivity extends AppCompatActivity {
         lvSaved = findViewById(R.id.lv_saved_news);
         tvNoData = findViewById(R.id.tv_no_data);
 
-        dbManager = new DBManager(this);
+        internalStorage = new InternalStorage(this);
 
         toolbar.setTitle(R.string.toolbar_saved_news_title);
         setSupportActionBar(toolbar);
@@ -49,7 +49,7 @@ public class SavedActivity extends AppCompatActivity {
     }
 
     private void loadData() {
-        arrSaved = dbManager.getAllNews(DBManager.TABLE_SAVED);
+        arrSaved = internalStorage.readFile(Constants.FILE_SAVED);
         if (arrSaved.size() > 0) {
             lvSaved.setVisibility(View.VISIBLE);
             tvNoData.setVisibility(View.GONE);
@@ -93,7 +93,7 @@ public class SavedActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 News news = arrSaved.get(position);
-                                dbManager.deleteNews(news, DBManager.TABLE_SAVED);
+                                internalStorage.removeObject(news, Constants.FILE_SAVED);
 
                                 loadData();
                             }

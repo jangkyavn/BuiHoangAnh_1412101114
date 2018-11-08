@@ -1,6 +1,9 @@
 package com.it.anhbh.buihoanganh_1412101114.constants;
 
 public class Constants {
+    public final static String FILE_HISTORY = "history.txt";
+    public final static String FILE_SAVED = "saved.txt";
+
     public final static String LINK_NEWS_DAY = "https://www.24h.com.vn/upload/rss/tintuctrongngay.rss";
     public final static String LINK_EDUCATION = "https://www.24h.com.vn/upload/rss/giaoducduhoc.rss";
     public final static String LINK_ENTERTAINMENT = "https://www.24h.com.vn/upload/rss/giaitri.rss";

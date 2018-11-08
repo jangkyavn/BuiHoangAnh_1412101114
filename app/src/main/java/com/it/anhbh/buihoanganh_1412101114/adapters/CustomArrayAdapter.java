@@ -43,6 +43,7 @@ public class CustomArrayAdapter extends ArrayAdapter<News> {
 
             holder = new ViewHolder();
             holder.tvTitle = convertView.findViewById(R.id.tv_title);
+            holder.tvDescription = convertView.findViewById(R.id.tv_description);
             holder.tvPubDate = convertView.findViewById(R.id.tv_pubdate);
             holder.ivThumbnail = convertView.findViewById(R.id.iv_thumbnail);
 
@@ -54,6 +55,8 @@ public class CustomArrayAdapter extends ArrayAdapter<News> {
         News news = this.objects.get(position);
 
         holder.tvTitle.setText(Html.fromHtml(news.getTitle()));
+        String description = news.getDescription().length() > 95 ? news.getDescription().substring(0, 95) + "..." : news.getDescription();
+        holder.tvDescription.setText(description.replace("&amp;#34;", "''"));
         holder.tvPubDate.setText(Utility.getPeriod(news.getPubDate()));
         Picasso.get().load(news.getThumbnail()).into(holder.ivThumbnail);
 
@@ -61,7 +64,7 @@ public class CustomArrayAdapter extends ArrayAdapter<News> {
     }
 
     class ViewHolder {
-        TextView tvTitle, tvPubDate;
+        TextView tvTitle, tvDescription, tvPubDate;
         ImageView ivThumbnail;
     }
 }

@@ -26,7 +26,7 @@ import com.it.anhbh.buihoanganh_1412101114.R;
 import com.it.anhbh.buihoanganh_1412101114.adapters.CustomArrayAdapter;
 import com.it.anhbh.buihoanganh_1412101114.constants.Constants;
 import com.it.anhbh.buihoanganh_1412101114.models.News;
-import com.it.anhbh.buihoanganh_1412101114.storages.DBManager;
+import com.it.anhbh.buihoanganh_1412101114.storages.InternalStorage;
 import com.it.anhbh.buihoanganh_1412101114.utilities.Utility;
 
 import org.jsoup.Jsoup;
@@ -48,7 +48,8 @@ public class WorldFragment extends Fragment {
 
     CustomArrayAdapter adapter;
     ArrayList<News> arrWorld;
-    DBManager dbManager;
+
+    InternalStorage internalStorage;
 
     @Nullable
     @Override
@@ -63,7 +64,7 @@ public class WorldFragment extends Fragment {
         btnRetry = view.findViewById(R.id.btn_retry);
         tvNotFound = view.findViewById(R.id.tv_not_found);
 
-        dbManager = new DBManager(getActivity());
+        internalStorage = new InternalStorage(getActivity());
 
         loadData();
         registerEvents();
@@ -99,7 +100,7 @@ public class WorldFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 News news = arrWorld.get(position);
-                dbManager.addNews(news, DBManager.TABLE_HISTORY);
+                internalStorage.addObject(news, Constants.FILE_HISTORY);
 
                 Intent intent = new Intent(getActivity(), DetailActivity.class);
                 intent.putExtra(Constants.KEY_NEWS, news);
@@ -139,8 +140,14 @@ public class WorldFragment extends Fragment {
 
                 for (Element element: elements) {
                     news = new News();
+
+                    String cData = element.select(Constants.NodeName.DESCRIPTION).text();
+                    String desc = cData.substring(cData.lastIndexOf("/>") + 2, cData.length());
+                    String src = Jsoup.parse(cData).select(Constants.NodeName.IMG).attr(Constants.Attribute.SRC);
+
                     news.setTitle(element.select(Constants.NodeName.TITLE).text());
-                    news.setThumbnail(Jsoup.parse(element.select(Constants.NodeName.DESCRIPTION).text()).select(Constants.NodeName.IMG).attr(Constants.Attribute.SRC));
+                    news.setThumbnail(src);
+                    news.setDescription(desc);
                     news.setLink(element.select(Constants.NodeName.LINK).text());
                     news.setPubDate(element.select(Constants.NodeName.PUB_DATE).text());
 
@@ -175,7 +182,8 @@ public class WorldFragment extends Fragment {
 
         if (searchView != null) {
             for (News item : arrWorld) {
-                if (Utility.removeAccents(item.getTitle().toLowerCase()).contains(Utility.removeAccents(keyword.toLowerCase()))) {
+                if (Utility.removeAccents(item.getTitle().toLowerCase()).contains(Utility.removeAccents(keyword.toLowerCase())) ||
+                        Utility.removeAccents(item.getDescription().toLowerCase()).contains(Utility.removeAccents(keyword.toLowerCase()))) {
                     filterList.add(item);
                 }
             }

@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class News implements Serializable {
     private String title;
     private String thumbnail;
+    private String description;
     private String link;
     private String pubDate;
 
@@ -22,6 +23,14 @@ public class News implements Serializable {
 
     public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getLink() {

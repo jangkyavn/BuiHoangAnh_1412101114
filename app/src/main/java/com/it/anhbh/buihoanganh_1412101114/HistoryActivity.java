@@ -17,7 +17,7 @@ import android.widget.TextView;
 import com.it.anhbh.buihoanganh_1412101114.adapters.CustomArrayAdapter;
 import com.it.anhbh.buihoanganh_1412101114.constants.Constants;
 import com.it.anhbh.buihoanganh_1412101114.models.News;
-import com.it.anhbh.buihoanganh_1412101114.storages.DBManager;
+import com.it.anhbh.buihoanganh_1412101114.storages.InternalStorage;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,7 +30,7 @@ public class HistoryActivity extends AppCompatActivity {
     CustomArrayAdapter adapter;
     ArrayList<News> arrHistory;
 
-    DBManager dbManager;
+    InternalStorage internalStorage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +41,7 @@ public class HistoryActivity extends AppCompatActivity {
         lvHistory = findViewById(R.id.lv_read_recently);
         tvNoData = findViewById(R.id.tv_no_data);
 
-        dbManager = new DBManager(this);
+        internalStorage = new InternalStorage(this);
 
         toolbar.setTitle(R.string.toolbar_read_recently_title);
         setSupportActionBar(toolbar);
@@ -52,7 +52,7 @@ public class HistoryActivity extends AppCompatActivity {
     }
 
     private void loadData() {
-        arrHistory = dbManager.getAllNews(DBManager.TABLE_HISTORY);
+        arrHistory = internalStorage.readFile(Constants.FILE_HISTORY);
         if (arrHistory.size() > 0) {
             lvHistory.setVisibility(View.VISIBLE);
             tvNoData.setVisibility(View.GONE);
@@ -104,7 +104,7 @@ public class HistoryActivity extends AppCompatActivity {
                     .setPositiveButton(getResources().getString(R.string.btn_text_agree), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            dbManager.deleteAllNews(DBManager.TABLE_HISTORY);
+                            internalStorage.clearData(Constants.FILE_HISTORY);
 
                             loadData();
                         }
