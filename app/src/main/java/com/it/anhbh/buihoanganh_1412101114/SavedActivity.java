@@ -5,7 +5,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -15,6 +19,7 @@ import com.it.anhbh.buihoanganh_1412101114.adapters.CustomArrayAdapter;
 import com.it.anhbh.buihoanganh_1412101114.constants.Constants;
 import com.it.anhbh.buihoanganh_1412101114.models.News;
 import com.it.anhbh.buihoanganh_1412101114.storages.InternalStorage;
+import com.it.anhbh.buihoanganh_1412101114.utilities.Utility;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,7 +27,8 @@ import java.util.Collections;
 public class SavedActivity extends AppCompatActivity {
     Toolbar toolbar;
     ListView lvSaved;
-    TextView tvNoData;
+    TextView tvNoData, tvNotFound;
+    SearchView searchView;
 
     CustomArrayAdapter adapter;
     ArrayList<News> arrSaved;
@@ -37,6 +43,7 @@ public class SavedActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         lvSaved = findViewById(R.id.lv_saved_news);
         tvNoData = findViewById(R.id.tv_no_data);
+        tvNotFound = findViewById(R.id.tv_not_found);
 
         internalStorage = new InternalStorage(this);
 
@@ -108,6 +115,57 @@ public class SavedActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+    private void loadFilterData(String keyword) {
+        ArrayList<News> filterList = new ArrayList<>();
+
+        if (searchView != null) {
+            for (News item : arrSaved) {
+                String description = item.getDescription().length() > 95 ? item.getDescription().substring(0, 95) + "..." : item.getDescription();
+
+                if (Utility.removeAccents(item.getTitle().toLowerCase()).contains(Utility.removeAccents(keyword.toLowerCase())) ||
+                        Utility.removeAccents(description.toLowerCase()).contains(Utility.removeAccents(keyword.toLowerCase()))) {
+                    filterList.add(item);
+                }
+            }
+        } else {
+            filterList = arrSaved;
+        }
+
+        adapter = new CustomArrayAdapter(SavedActivity.this, R.layout.custom_list_item, filterList);
+        lvSaved.setAdapter(adapter);
+
+        if (filterList.size() > 0) {
+            tvNotFound.setVisibility(View.GONE);
+        } else {
+            tvNotFound.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.activity_saved_menu, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.menu_search);
+        searchView = (SearchView) searchItem.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                loadFilterData(s);
+
+                return false;
+            }
+        });
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

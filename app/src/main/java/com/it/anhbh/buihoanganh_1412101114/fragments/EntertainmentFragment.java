@@ -182,8 +182,10 @@ public class EntertainmentFragment extends Fragment {
 
         if (searchView != null) {
             for (News item : arrEntertainment) {
+                String description = item.getDescription().length() > 95 ? item.getDescription().substring(0, 95) + "..." : item.getDescription();
+
                 if (Utility.removeAccents(item.getTitle().toLowerCase()).contains(Utility.removeAccents(keyword.toLowerCase())) ||
-                        Utility.removeAccents(item.getDescription().toLowerCase()).contains(Utility.removeAccents(keyword.toLowerCase()))) {
+                        Utility.removeAccents(description.toLowerCase()).contains(Utility.removeAccents(keyword.toLowerCase()))) {
                     filterList.add(item);
                 }
             }

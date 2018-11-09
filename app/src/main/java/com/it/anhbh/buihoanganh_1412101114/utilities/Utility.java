@@ -44,6 +44,11 @@ public class Utility {
         long diffHours = diff / (60 * 60 * 1000) % 24;
         long diffDays = diff / (24 * 60 * 60 * 1000);
         long diffWeeks = diffDays / 7;
+        long diffMonths = diffWeeks / 4;
+
+        if (diffMonths > 0) {
+            return diffMonths + " tháng trước";
+        }
 
         if (diffWeeks > 0) {
             return diffWeeks + " tuần trước";

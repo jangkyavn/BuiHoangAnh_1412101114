@@ -6,8 +6,8 @@ android {
         applicationId "com.it.anhbh.buihoanganh_1412101114"
         minSdkVersion 22
         targetSdkVersion 28
-        versionCode 8
-        versionName "1.5"
+        versionCode 9
+        versionName "1.6"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

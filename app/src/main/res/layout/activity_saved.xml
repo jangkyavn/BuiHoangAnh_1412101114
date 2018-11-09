@@ -35,6 +35,15 @@
             android:dividerHeight="@dimen/lv_divider_height" />
 
         <TextView
+            android:id="@+id/tv_not_found"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/tv_not_found"
+            android:textColor="@color/colorBlack"
+            android:visibility="gone" />
+
+        <TextView
             android:id="@+id/tv_no_data"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

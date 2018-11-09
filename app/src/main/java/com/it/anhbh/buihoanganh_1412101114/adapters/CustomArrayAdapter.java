@@ -55,6 +55,7 @@ public class CustomArrayAdapter extends ArrayAdapter<News> {
         News news = this.objects.get(position);
 
         holder.tvTitle.setText(Html.fromHtml(news.getTitle()));
+
         String description = news.getDescription().length() > 95 ? news.getDescription().substring(0, 95) + "..." : news.getDescription();
         holder.tvDescription.setText(description.replace("&amp;#34;", "''"));
         holder.tvPubDate.setText(Utility.getPeriod(news.getPubDate()));
